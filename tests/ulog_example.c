@@ -11,19 +11,19 @@
 // to ULOG.  This means you may print it or copy it, but saving a pointer to it
 // will lead to confusion and astonishment.
 //
-void my_console_logger(ulog_level_t severity, char *msg)
+void my_console_logger(ulog_level_t severity, char *msg, void* arg)
 {
   printf("console: %s [%s]: %s\n",
          "time", // user defined function
-         ulog_level_name(severity),
+         ULOG_LEVEL_NAME(severity),
          msg);
 }
 
-void my_file_logger(ulog_level_t severity, char *msg)
+void my_file_logger(ulog_level_t severity, char *msg, void* arg)
 {
   printf("file: %s [%s]: %s\n",
          "time", // user defined function
-         ulog_level_name(severity),
+         ULOG_LEVEL_NAME(severity),
          msg);
 }
 
@@ -53,5 +53,5 @@ int main()
   // remove a logger
   ULOG_UNSUBSCRIBE(my_file_logger);
 
-  ULOG_INFO("Info, arg=%d", arg); // logs to console only
+  ULOG_ARG_INFO("this is a test", "Info, arg=%d", arg); // logs to console only
 }

@@ -93,28 +93,44 @@ typedef enum {
   #define ULOG_SUBSCRIBE(a, b) ulog_subscribe(a, b)
   #define ULOG_UNSUBSCRIBE(a) ulog_unsubscribe(a)
   #define ULOG_LEVEL_NAME(a) ulog_level_name(a)
-  #define ULOG(...) ulog_message(__VA_ARGS__)
-  #define ULOG_TRACE(...) ulog_message(ULOG_TRACE_LEVEL, __VA_ARGS__)
-  #define ULOG_DEBUG(...) ulog_message(ULOG_DEBUG_LEVEL, __VA_ARGS__)
-  #define ULOG_INFO(...) ulog_message(ULOG_INFO_LEVEL, __VA_ARGS__)
-  #define ULOG_WARNING(...) ulog_message(ULOG_WARNING_LEVEL, __VA_ARGS__)
-  #define ULOG_ERROR(...) ulog_message(ULOG_ERROR_LEVEL, __VA_ARGS__)
-  #define ULOG_CRITICAL(...) ulog_message(ULOG_CRITICAL_LEVEL, __VA_ARGS__)
-  #define ULOG_ALWAYS(...) ulog_message(ULOG_ALWAYS_LEVEL, __VA_ARGS__)
+  #define ULOG(...) ulog_message(NULL, __VA_ARGS__)
+  #define ULOG_TRACE(...) ulog_message(NULL, ULOG_TRACE_LEVEL, __VA_ARGS__)
+  #define ULOG_DEBUG(...) ulog_message(NULL, ULOG_DEBUG_LEVEL, __VA_ARGS__)
+  #define ULOG_INFO(...) ulog_message(NULL, ULOG_INFO_LEVEL, __VA_ARGS__)
+  #define ULOG_WARNING(...) ulog_message(NULL, ULOG_WARNING_LEVEL, __VA_ARGS__)
+  #define ULOG_ERROR(...) ulog_message(NULL, ULOG_ERROR_LEVEL, __VA_ARGS__)
+  #define ULOG_CRITICAL(...) ulog_message(NULL, ULOG_CRITICAL_LEVEL, __VA_ARGS__)
+  #define ULOG_ALWAYS(...) ulog_message(NULL, ULOG_ALWAYS_LEVEL, __VA_ARGS__)
+  #define ULOG_ARG(a, ...) ulog_message(a, __VA_ARGS__)
+  #define ULOG_ARG_TRACE(a, ...) ulog_message(a, ULOG_TRACE_LEVEL, __VA_ARGS__)
+  #define ULOG_ARG_DEBUG(a, ...) ulog_message(a, ULOG_DEBUG_LEVEL, __VA_ARGS__)
+  #define ULOG_ARG_INFO(a, ...) ulog_message(a, ULOG_INFO_LEVEL, __VA_ARGS__)
+  #define ULOG_ARG_WARNING(a, ...) ulog_message(a, ULOG_WARNING_LEVEL, __VA_ARGS__)
+  #define ULOG_ARG_ERROR(a, ...) ulog_message(a, ULOG_ERROR_LEVEL, __VA_ARGS__)
+  #define ULOG_ARG_CRITICAL(a, ...) ulog_message(a, ULOG_CRITICAL_LEVEL, __VA_ARGS__)
+  #define ULOG_ARG_ALWAYS(a, ...) ulog_message(a, ULOG_ALWAYS_LEVEL, __VA_ARGS__)
 #else
   // uLog vanishes when disabled at compile time...
   #define ULOG_INIT() do {} while(0)
   #define ULOG_SUBSCRIBE(a, b) do {} while(0)
   #define ULOG_UNSUBSCRIBE(a) do {} while(0)
-  #define ULOG_LEVEL_NAME(a) do {} while(0)
-  #define ULOG(s, f, ...) do {} while(0)
-  #define ULOG_TRACE(f, ...) do {} while(0)
-  #define ULOG_DEBUG(f, ...) do {} while(0)
-  #define ULOG_INFO(f, ...) do {} while(0)
-  #define ULOG_WARNING(f, ...) do {} while(0)
-  #define ULOG_ERROR(f, ...) do {} while(0)
-  #define ULOG_CRITICAL(f, ...) do {} while(0)
-  #define ULOG_ALWAYS(f, ...) do {} while(0)
+  #define ULOG_LEVEL_NAME(a) ""
+  #define ULOG(a, s, f, ...) do {} while(0)
+  #define ULOG_TRACE(a, f, ...) do {} while(0)
+  #define ULOG_DEBUG(a, f, ...) do {} while(0)
+  #define ULOG_INFO(a, f, ...) do {} while(0)
+  #define ULOG_WARNING(a, f, ...) do {} while(0)
+  #define ULOG_ERROR(a, f, ...) do {} while(0)
+  #define ULOG_CRITICAL(a, f, ...) do {} while(0)
+  #define ULOG_ALWAYS(a, f, ...) do {} while(0)
+  #define ULOG_ARG(a, s, f, ...) do {} while(0)
+  #define ULOG_ARG_TRACE(a, f, ...) do {} while(0)
+  #define ULOG_ARG_DEBUG(a, f, ...) do {} while(0)
+  #define ULOG_ARG_INFO(a, f, ...) do {} while(0)
+  #define ULOG_ARG_WARNING(a, f, ...) do {} while(0)
+  #define ULOG_ARG_ERROR(a, f, ...) do {} while(0)
+  #define ULOG_ARG_CRITICAL(a, f, ...) do {} while(0)
+  #define ULOG_ARG_ALWAYS(a, f, ...) do {} while(0)
 #endif
 
 typedef enum {
@@ -134,13 +150,13 @@ typedef enum {
 /**
  * @brief: prototype for uLog subscribers.
  */
-typedef void (*ulog_function_t)(ulog_level_t severity, char *msg);
+typedef void (*ulog_function_t)(ulog_level_t severity, char *msg, void* arg);
 
 void ulog_init(void);
 ulog_err_t ulog_subscribe(ulog_function_t fn, ulog_level_t threshold);
 ulog_err_t ulog_unsubscribe(ulog_function_t fn);
 const char *ulog_level_name(ulog_level_t level);
-void ulog_message(ulog_level_t severity, const char *fmt, ...);
+void ulog_message(void* arg, ulog_level_t severity, const char *fmt, ...);
 
 #ifdef __cplusplus
 }
