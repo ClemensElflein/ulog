@@ -157,7 +157,8 @@ ulog_err_t ulog_subscribe(ulog_function_t fn, ulog_level_t threshold);
 ulog_err_t ulog_unsubscribe(ulog_function_t fn);
 const char *ulog_level_name(ulog_level_t level);
 void ulog_message(void* arg, ulog_level_t severity, const char *fmt, ...);
-
+void ulog_lock_mutex();
+void ulog_unlock_mutex();
 #ifdef __cplusplus
 }
 #endif

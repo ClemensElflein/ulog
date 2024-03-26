@@ -109,6 +109,7 @@ const char *ulog_level_name(ulog_level_t severity) {
 }
 
 void ulog_message(void* arg, ulog_level_t severity, const char *fmt, ...) {
+  ulog_lock_mutex();
   va_list ap;
   int i;
   va_start(ap, fmt);
@@ -122,6 +123,7 @@ void ulog_message(void* arg, ulog_level_t severity, const char *fmt, ...) {
       }
     }
   }
+  ulog_unlock_mutex();
 }
 
 // =============================================================================
