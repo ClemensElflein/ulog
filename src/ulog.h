@@ -150,13 +150,13 @@ typedef enum {
 /**
  * @brief: prototype for uLog subscribers.
  */
-typedef void (*ulog_function_t)(ulog_level_t severity, char *msg, void* arg);
+typedef void (*ulog_function_t)(ulog_level_t severity, char *msg, const void* arg);
 
 void ulog_init(void);
 ulog_err_t ulog_subscribe(ulog_function_t fn, ulog_level_t threshold);
 ulog_err_t ulog_unsubscribe(ulog_function_t fn);
 const char *ulog_level_name(ulog_level_t level);
-void ulog_message(void* arg, ulog_level_t severity, const char *fmt, ...);
+void ulog_message(const void* arg, ulog_level_t severity, const char *fmt, ...);
 void ulog_lock_mutex();
 void ulog_unlock_mutex();
 #ifdef __cplusplus
